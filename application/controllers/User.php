@@ -522,6 +522,11 @@ class User extends CI_Controller
         if ($this->is_login())
         {
             $trade = $this->user_model->t_select($trade_no);
+            if ($trade->user_name != $this->session->userdata('s_username'))
+            {
+                echo "非法访问！";
+                return;
+            }
             $form = $this->user_model->t_f_select($trade_no)->body;
             echo "交易编号： ".$trade_no."<br>";
             echo "充值账户： ".$trade->user_name."<br>";
@@ -529,6 +534,7 @@ class User extends CI_Controller
             echo "创建时间： ".date('Y-m-d H:i:s', $trade->ctime)."<br>";
             echo "是否完成： ".$trade->result."<br>";
             echo $form;
+            return;
         }
         else
         {
