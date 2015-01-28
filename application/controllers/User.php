@@ -438,8 +438,26 @@ class User extends CI_Controller
     {
         if ($this->is_login())
         {
-            $user_name = $this->input->post('username');
-            $amount = $this->input->post('amount');
+            $user_name = trim($this->input->post('username'));
+            $amount = (int) $this->input->post('amount');
+            if ($amount <= 0)
+            {
+                echo '{"result" : "金额错误！" }';
+                return;
+            }
+            $user = $this->user_mudel->u_select($user_name);
+            if (!$user)
+            {
+                echo '{"result" : "用户不存在！" }';
+                return;
+            }
+            $trade_no = date("YmdHis").$user->uid;
+            $ip = $this->input->ip_address();
+
+            if ($this->user_model->create_transaction($trade_no, $user_name, $amount, $ip))
+            {
+
+            }
             echo '{"result" : "success", "pay_url" : "https://maoxian.de" }';
             return;
         }

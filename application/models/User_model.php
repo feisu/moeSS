@@ -634,4 +634,19 @@ class User_model extends CI_Model
             return $query->result()[0]->option_value;
         }
     }
+
+    function create_transaction($trade_no, $user_name, $amount, $ip)
+    {
+        $data = array(
+            'trade_no' => $trade_no,
+            'user_name' => $user_name,
+            'amount' => $amount,
+            'ip' => $ip,
+            'result' => FALSE,
+            'ctime' => now(),
+            'ftime' => 0
+        );
+
+        return $this->db->insert('transactions', $data);
+    }
 }
