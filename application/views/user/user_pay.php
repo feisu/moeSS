@@ -112,7 +112,8 @@ $this->load->helper('form');
                         },
                         fee: {
                             required: true,
-                            digits: true
+                            digits: true,
+                            range: [1, 100]
                         }
                     }
                 }
@@ -125,11 +126,11 @@ $this->load->helper('form');
                 var dialog = new BootstrapDialog({
                     size: BootstrapDialog.SIZE_LARGE,
                     type: BootstrapDialog.TYPE_SUCCESS,
-                    title: '注册成功',
+                    title: '订单生成成功',
                     message: data.result,
                     closable: false,
                     buttons: [{
-                        label: '关闭',
+                        label: '支付',
                         action: function (dialogRef) {
                             dialogRef.close();
                             window.location.href = data.pay_url;
@@ -181,7 +182,7 @@ $this->load->helper('form');
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-cny"></i></span>
-                <input type="number"  id="amount" name="amount" class="form-control" tabindex=2 placeholder="Amount" required>
+                <input type="number"  id="amount" name="amount" class="form-control" tabindex=2 placeholder="Amount 1~100" required>
             </div>
         </div>
     </div>
