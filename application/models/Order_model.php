@@ -98,7 +98,7 @@ class Order_model extends CI_Model
     function finish_trade($trade_no, $notify_id, $buyer_email, $ftime)
     {
         $data = array(
-            'nofity_id' => $notify_id,
+            'notify_id' => $notify_id,
             'buyer_email' => $buyer_email,
             'ftime' => $ftime,
             'result' => TRUE
