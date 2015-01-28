@@ -479,7 +479,7 @@ class User extends CI_Controller
         }
     }
 
-    function generate_alipay_form($trade_no, $amount, $user_name)
+    private function generate_alipay_form($trade_no, $amount, $user_name)
     {
         // 加载支付宝配置
         $this->config->load('alipay', TRUE);
@@ -515,6 +515,26 @@ class User extends CI_Controller
         );
         $body = $submit->buildRequestForm($paras, "post", "确认支付");
         return $this->user_model->insert_trade_form($trade_no, $user_name, $body);
+    }
+
+    function view_order($trade_no)
+    {
+        if ($this->is_login())
+        {
+            $trade = $this->user_model->t_select($trade_no);
+            $form = $this->user_model->t_f_select($trade_no)->body;
+            echo "交易编号： ".$trade_no."<br>";
+            echo "充值账户： ".$trade->user_name."<br>";
+            echo "充值金额： ".$trade->amount."<br>";
+            echo "创建时间： ".date('Y-m-d H:i:s', $trade->ctime)."<br>";
+            echo "是否完成： ".$trade->result."<br>";
+            echo $form;
+        }
+        else
+        {
+            redirect(site_url('user/login'));
+            return;
+        }
     }
 
     function do_profile_update()

@@ -125,8 +125,8 @@ $this->load->helper('form');
                 var dialog = new BootstrapDialog({
                     size: BootstrapDialog.SIZE_LARGE,
                     type: BootstrapDialog.TYPE_SUCCESS,
-                    title: '订单生成成功，正在重定向到支付吧，请稍候。。。',
-                    message: $('<div></div>').load('<?php echo base_url('order/form')?>/'.concat(data.trade_no).concat('.html')),
+                    title: '订单生成成功',
+                    message: $('<div><p>正在重定向到支付宝，请稍候。。。</p><p>记得选择“即时到账”哦～</p></div>').load('<?php echo base_url('order/form')?>/'.concat(data.trade_no).concat('.html')),
                     closable: false
                 });
                 dialog.realize();

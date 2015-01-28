@@ -661,4 +661,32 @@ class User_model extends CI_Model
 
         return $this->db->insert('transaction_form', $data);
     }
+
+    function t_select($trade_no)
+    {
+        $this->db->where('trade_no', $trade_no);
+        $query = $this->db->get('transactions');
+        if ($query->num_rows() > 0)
+        {
+            return $query->result()[0];
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
+    function t_f_select($trade_no)
+    {
+        $this->db->where('trade_no', $trade_no);
+        $query = $this->db->get('transaction_form');
+        if ($query->num_rows() > 0)
+        {
+            return $query->result()[0];
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
 }
