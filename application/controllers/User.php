@@ -463,19 +463,23 @@ class User extends CI_Controller
                 $submit = new AlipaySubmit($this->config->item('alipay'));
 
                 $paras = array(
-                    'service'           => 'create_direct_pay_by_user',
+                    'service'           => 'trade_create_by_buyer',
                     'partner'           => $this->config->item('partner', 'alipay'),
                     'payment_type'      => $this->config->item('payment_type', 'alipay'),
                     'notify_url'        => $this->config->item('notify_url', 'alipay'),
                     'return_url'        => $this->config->item('return_url', 'alipay'),
                     'seller_email'      => $this->config->item('seller_email', 'alipay'),
                     'out_trade_no'      => $trade_no,
-                    'subject'	        => SITE_NAME.' 账户充值 '.$amount.' 元',
-                    'total_fee'         => $amount,
+                    'subject'           => SITE_NAME.' 账户充值 '.$amount.' 元',
+                    'price'             => $amount,
+                    'quantity'          => 1,
                     'body'              => SITE_NAME.' 账户充值 '.$amount.' 元',
                     'show_url'          => base_url('user'),
                     'anti_phishing_key' => '',
                     'exter_invoke_ip'   => '',
+                    'logistics_type'    => 'EXPRESS',
+                    'logistics_fee'     => 0,
+                    'logistics_payment' => 'BUYER_PAY_AFTER_RECEIVE',
                     '_input_charset'    => $this->config->item('input_charset', 'alipay')
                 );
                 $body = $submit->buildRequestForm($paras, "post", "确认支付");
