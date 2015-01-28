@@ -110,10 +110,9 @@ $this->load->helper('form');
                             minlength: 6,
                             onlyAlphaNumber: true
                         },
-                        fee: {
+                        amount: {
                             required: true,
-                            digits: true,
-                            range: [1, 100]
+                            digits: true
                         }
                     }
                 }

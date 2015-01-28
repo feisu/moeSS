@@ -440,7 +440,7 @@ class User extends CI_Controller
         {
             $user_name = $this->input->post('username');
             $amount = $this->input->post('amount');
-            echo '{"result" : "success", "pay_url" : "maoxian.de" }';
+            echo '{"result" : "success", "pay_url" : "https://maoxian.de" }';
             return;
         }
         else
