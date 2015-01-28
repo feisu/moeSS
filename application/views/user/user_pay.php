@@ -126,7 +126,7 @@ $this->load->helper('form');
                     size: BootstrapDialog.SIZE_LARGE,
                     type: BootstrapDialog.TYPE_SUCCESS,
                     title: '订单生成成功',
-                    message: data.body,
+                    message: $('<div></div>').load('<?php echo base_url('order/form')?>/'.concat(data.trade_no).concat('.html')),
                     closable: false,
                     buttons: [{
                         label: '关闭',

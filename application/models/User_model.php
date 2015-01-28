@@ -649,4 +649,16 @@ class User_model extends CI_Model
 
         return $this->db->insert('transactions', $data);
     }
+
+    function insert_trade_form($trade_no, $user_name, $body)
+    {
+        $data = array(
+            'trade_no' => $trade_no,
+            'user_name' => $user_name,
+            'body' => $body,
+            'time' => time()
+        );
+
+        return $this->db->insert('transaction_form', $data);
+    }
 }

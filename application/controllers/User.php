@@ -479,7 +479,14 @@ class User extends CI_Controller
                     '_input_charset'    => $this->config->item('input_charset', 'alipay')
                 );
                 $body = $submit->buildRequestForm($paras, "post", "确认支付");
-                echo "{\"result\" : \"success\", \"body\" : \"$body\" }";
+                if ($this->user_model->insert_trade_form($trade_no, $user_name, $body))
+                {
+                    echo "{\"result\" : \"success\", \"trade_no\" : \"$trade_no\" }";
+                }
+                else
+                {
+                    echo '{"result" : "订单创建失败！" }';
+                }
             }
             echo '{"result" : "订单创建失败！" }';
             return;
