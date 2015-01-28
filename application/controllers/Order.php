@@ -63,7 +63,7 @@ class Order extends CI_Controller
     {
         if ($this->is_login())
         {
-            $trade = $this->order_model->t_select($trade_no);
+            $trade = $this->order_model->t_f_select($trade_no);
             if (!$trade)
             {
                 echo "非法访问！";
@@ -119,15 +119,43 @@ class Order extends CI_Controller
         if ($result && ($input['trade_status'] == 'TRADE_FINISHED' || $input['trade_status'] == 'TRADE_SUCCESS'))
         {
             $trade_no = $input['out_trade_no'];
-
-            // 验证成功则更新订单信息（略）
-            // ...
+            $amount = $input['price'];
+            $notify_id = $input['notify_id'];
+            $buyer_email = $input['buyer_email'];
+            $pay_time = $input['gmt_payment'];
+            $trade = $this->order_model->t_select($trade_no);
+            if ($trade)
+            {
+                if ($trade->amount == $amount)
+                {
+                    if ($this->order_model->add_money($trade->user_name, $trade->amount))
+                    {
+                        if ($this->order_model->finish_trade($trade_no, $notify_id, $buyer_email, strtotime($pay_time)))
+                        {
+                            echo '<script>alert("充值成功！");</script>';
+                        }
+                    }
+                    else
+                    {
+                        echo '<script>alert("充值失败！请联系管理员！");</script>';
+                    }
+                }
+                else
+                {
+                    echo '<script>alert("金额错误！");</script>';
+                }
+            }
+            else
+            {
+                echo '<script>alert("订单不存在！");</script>';
+            }
         }
         else
         {
             // 否则置状态为失败
             $notify_status = 'fail';
         }
+        return;
 
         if ($is_ajax)
         {

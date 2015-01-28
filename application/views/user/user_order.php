@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <p>充值账户: <?php if (!$error) { echo $user_name; } else { echo "N/A"; } ?></p>
                         <p>充值金额: <?php if (!$error) { echo $amount; } else { echo "N/A"; } ?></p>
                         <p>创建时间: <?php if (!$error) { echo $time; } else { echo "N/A"; } ?></p>
-                        <p>是否完成: <?php if (!$error) { echo $order_result; } else { echo "N/A"; } ?></p>
+                        <p>订单状态: <?php if (!$error) { echo $order_result; } else { echo "N/A"; } ?></p>
                         <?php if (!$error) { echo $form; } ?>
                     </div><!-- /.box -->
                 </div>

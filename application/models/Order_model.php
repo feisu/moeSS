@@ -47,7 +47,7 @@ class Order_model extends CI_Model
         return $this->load->database();
     }
 
-    function t_select($trade_no)
+    function t_f_select($trade_no)
     {
         $this->db->where('trade_no', $trade_no);
         $query = $this->db->get('transaction_form');
@@ -59,5 +59,50 @@ class Order_model extends CI_Model
         {
             return FALSE;
         }
+    }
+
+    function t_select($trade_no)
+    {
+        $this->db->where('trade_no', $trade_no);
+        $query = $this->db->get('transactions');
+        if ($query->num_rows() > 0)
+        {
+            return $query->result()[0];
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
+    function add_money($user_name, $amount)
+    {
+        $this->db->select('money');
+        $this->db->where('user_name', $user_name);
+        $query = $this->db->get('user');
+        if ($query->num_rows() > 0)
+        {
+            $money = $query->result()[0]->money;
+            $money = $money + $amount;
+            $data = array( 'money' => $money );
+            $this->db->limit(1);
+            $this->db->where('user_name', $user_name);
+            return $this->db->update('user',$data);
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
+    function finish_trade($trade_no, $notify_id, $buyer_email, $ftime)
+    {
+        $data = array(
+            'nofity_id' => $notify_id,
+            'buyer_email' => $buyer_email,
+            'ftime' => $ftime
+        );
+        $this->db->where('trade_no', $trade_no);
+        return $this->db->update('transactions',$data);
     }
 }
