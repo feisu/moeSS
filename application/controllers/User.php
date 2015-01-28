@@ -421,7 +421,16 @@ class User extends CI_Controller
 
     function pay()
     {
-        redirect(site_url('user'));
+        if ($this->is_login())
+        {
+            //$this->load->view('welcome_message');
+            $data['user_name'] = $this->session->userdata('s_username');
+            $this->load->view( 'user/user_pay', $data );
+        }
+        else
+        {
+            redirect(site_url('user/login'));
+        }
         return;
     }
 
