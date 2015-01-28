@@ -478,7 +478,7 @@ class User extends CI_Controller
                     'anti_phishing_key' => '',
                     'exter_invoke_ip'   => '',
                     'logistics_type'    => 'EXPRESS',
-                    'logistics_fee'     => 0.00,
+                    'logistics_fee'     => '0.00',
                     'logistics_payment' => 'BUYER_PAY_AFTER_RECEIVE',
                     'receive_name'      => $user_name,
                     'receive_address'   => $user_name . "@" . SITE_NAME,
