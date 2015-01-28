@@ -84,7 +84,7 @@ class Order extends CI_Controller
         return;
     }
 
-    function callback ($method)
+    function callback($method)
     {
         // 加载支付宝配置
         $this->config->load('alipay', TRUE);
@@ -152,6 +152,7 @@ class Order extends CI_Controller
         }
         else
         {
+            echo '<script>alert("参数不正确！");</script>';
             // 否则置状态为失败
             $notify_status = 'fail';
         }
