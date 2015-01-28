@@ -480,6 +480,11 @@ class User extends CI_Controller
                     'logistics_type'    => 'EXPRESS',
                     'logistics_fee'     => 0,
                     'logistics_payment' => 'BUYER_PAY_AFTER_RECEIVE',
+                    'receive_name'      => $user_name,
+                    'receive_address'   => $user_name . "@" . SITE_NAME,
+                    'receive_zip'       => "100000",
+                    'receive_phone'     => "13800138000",
+                    'receive_mobile'    => "13800138000",
                     '_input_charset'    => $this->config->item('input_charset', 'alipay')
                 );
                 $body = $submit->buildRequestForm($paras, "post", "确认支付");
