@@ -455,40 +455,7 @@ class User extends CI_Controller
             $ip = $this->input->ip_address();
             if ($this->user_model->create_transaction($trade_no, $user_name, $amount, $ip))
             {
-                // 加载支付宝配置
-                $this->config->load('alipay', TRUE);
-                // 加载支付宝支付请求类库
-                require_once(APPPATH."third_party/alipay/alipay_submit.class.php");
-
-                $submit = new AlipaySubmit($this->config->item('alipay'));
-
-                $paras = array(
-                    'service'           => 'trade_create_by_buyer',
-                    'partner'           => $this->config->item('partner', 'alipay'),
-                    'payment_type'      => $this->config->item('payment_type', 'alipay'),
-                    'notify_url'        => $this->config->item('notify_url', 'alipay'),
-                    'return_url'        => $this->config->item('return_url', 'alipay'),
-                    'seller_email'      => $this->config->item('seller_email', 'alipay'),
-                    'out_trade_no'      => $trade_no,
-                    'subject'           => SITE_NAME.' 账户充值 '.$amount.' 元',
-                    'price'             => $amount,
-                    'quantity'          => 1,
-                    'body'              => SITE_NAME.' 账户充值 '.$amount.' 元',
-                    'show_url'          => base_url('user'),
-                    'anti_phishing_key' => '',
-                    'exter_invoke_ip'   => '',
-                    'logistics_type'    => 'EXPRESS',
-                    'logistics_fee'     => '0.00',
-                    'logistics_payment' => 'BUYER_PAY_AFTER_RECEIVE',
-                    'receive_name'      => $user_name,
-                    'receive_address'   => $user_name . "@" . SITE_NAME,
-                    'receive_zip'       => "100000",
-                    'receive_phone'     => "13800138000",
-                    'receive_mobile'    => "13800138000",
-                    '_input_charset'    => $this->config->item('input_charset', 'alipay')
-                );
-                $body = $submit->buildRequestForm($paras, "post", "确认支付");
-                if ($this->user_model->insert_trade_form($trade_no, $user_name, $body))
+                if ($this->generate_alipay_form($trade_no,$amount,$user_name))
                 {
                     echo "{\"result\" : \"success\", \"trade_no\" : \"$trade_no\" }";
                     return;
@@ -510,6 +477,44 @@ class User extends CI_Controller
             redirect(site_url('user/login'));
             return;
         }
+    }
+
+    function generate_alipay_form($trade_no, $amount, $user_name)
+    {
+        // 加载支付宝配置
+        $this->config->load('alipay', TRUE);
+        // 加载支付宝支付请求类库
+        require_once(APPPATH."third_party/alipay/alipay_submit.class.php");
+
+        $submit = new AlipaySubmit($this->config->item('alipay'));
+
+        $paras = array(
+            'service'           => 'trade_create_by_buyer',
+            'partner'           => $this->config->item('partner', 'alipay'),
+            'payment_type'      => $this->config->item('payment_type', 'alipay'),
+            'notify_url'        => $this->config->item('notify_url', 'alipay'),
+            'return_url'        => $this->config->item('return_url', 'alipay'),
+            'seller_email'      => $this->config->item('seller_email', 'alipay'),
+            'out_trade_no'      => $trade_no,
+            'subject'           => SITE_NAME.' 账户充值 '.$amount.' 元',
+            'price'             => $amount,
+            'quantity'          => 1,
+            'body'              => SITE_NAME.' 账户充值 '.$amount.' 元',
+            'show_url'          => site_url("user/view_order/$trade_no"),
+            'anti_phishing_key' => '',
+            'exter_invoke_ip'   => '',
+            'logistics_type'    => 'EXPRESS',
+            'logistics_fee'     => '0.00',
+            'logistics_payment' => 'BUYER_PAY_AFTER_RECEIVE',
+            'receive_name'      => $user_name,
+            'receive_address'   => $user_name . "@" . SITE_NAME,
+            'receive_zip'       => "100000",
+            'receive_phone'     => "13800138000",
+            'receive_mobile'    => "13800138000",
+            '_input_charset'    => $this->config->item('input_charset', 'alipay')
+        );
+        $body = $submit->buildRequestForm($paras, "post", "确认支付");
+        return $this->user_model->insert_trade_form($trade_no, $user_name, $body);
     }
 
     function do_profile_update()

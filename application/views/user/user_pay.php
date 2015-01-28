@@ -125,15 +125,9 @@ $this->load->helper('form');
                 var dialog = new BootstrapDialog({
                     size: BootstrapDialog.SIZE_LARGE,
                     type: BootstrapDialog.TYPE_SUCCESS,
-                    title: '订单生成成功',
+                    title: '订单生成成功，正在重定向到支付吧，请稍候。。。',
                     message: $('<div></div>').load('<?php echo base_url('order/form')?>/'.concat(data.trade_no).concat('.html')),
-                    closable: false,
-                    buttons: [{
-                        label: '关闭',
-                        action: function (dialogRef) {
-                            dialogRef.close();
-                        }
-                    }]
+                    closable: false
                 });
                 dialog.realize();
                 dialog.getModalBody().css('color', '#000');
