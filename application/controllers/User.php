@@ -482,20 +482,25 @@ class User extends CI_Controller
                 if ($this->user_model->insert_trade_form($trade_no, $user_name, $body))
                 {
                     echo "{\"result\" : \"success\", \"trade_no\" : \"$trade_no\" }";
+                    return;
                 }
                 else
                 {
                     echo '{"result" : "订单创建失败！" }';
+                    return;
                 }
             }
-            echo '{"result" : "订单创建失败！" }';
-            return;
+            else
+            {
+                echo '{"result" : "订单创建失败！" }';
+                return;
+            }
         }
         else
         {
             redirect(site_url('user/login'));
+            return;
         }
-        return;
     }
 
     function do_profile_update()
