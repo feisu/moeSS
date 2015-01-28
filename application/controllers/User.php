@@ -445,7 +445,7 @@ class User extends CI_Controller
                 echo '{"result" : "金额错误！" }';
                 return;
             }
-            $user = $this->user_mudel->u_select($user_name);
+            $user = $this->user_model->u_select($user_name);
             if (!$user)
             {
                 echo '{"result" : "用户不存在！" }';
