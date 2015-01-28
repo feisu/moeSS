@@ -550,7 +550,15 @@ class User extends CI_Controller
                     $data['user_name'] = $trade->user_name;
                     $data['amount'] = $trade->amount;
                     $data['time'] = date('Y-m-d H:i:s', $trade->ctime);
-                    $date['result'] = $trade->result;
+                    if ($trade->result)
+                    {
+                        $date['result'] = "成功";
+                        $data['form'] = "<div></div>";
+                    }
+                    else
+                    {
+                        $date['result'] = "进行中";
+                    }
                 }
             }
             else
