@@ -119,10 +119,10 @@ class Order extends CI_Controller
         if ($result && ($input['trade_status'] == 'TRADE_FINISHED' || $input['trade_status'] == 'TRADE_SUCCESS'))
         {
             $trade_no = $input['out_trade_no'];
-            $amount = $input['price'];
+            $amount = $input['total_fee'];
             $notify_id = $input['notify_id'];
             $buyer_email = $input['buyer_email'];
-            $pay_time = $input['gmt_payment'];
+            $pay_time = $input['notify_time'];
             $trade = $this->order_model->t_select($trade_no);
             if ($trade)
             {
