@@ -130,6 +130,7 @@ $this->load->helper('form');
                     closable: false,
                     buttons: [{
                         label: '支付',
+                        cssClass: 'btn-primary',
                         action: function (dialogRef) {
                             dialogRef.close();
                             window.location.href = data.pay_url;
@@ -180,7 +181,7 @@ $this->load->helper('form');
         </div>
         <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-cny"></i></span>
+                <span class="input-group-addon"><i class="fa fa-cny fa-fw"></i></span>
                 <input type="number"  id="amount" name="amount" class="form-control" tabindex=2 placeholder="Amount 1~100" required>
             </div>
         </div>
