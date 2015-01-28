@@ -128,7 +128,7 @@ class Order extends CI_Controller
             {
                 if ($trade->amount == $amount)
                 {
-                    if ($trade->result)
+                    if ( $trade->result || !$is_ajax )  //只接收 Notify
                     {
                         echo '<script>alert("充值成功！");</script>';
                         return;
