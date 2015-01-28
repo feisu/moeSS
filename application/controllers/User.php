@@ -527,6 +527,7 @@ class User extends CI_Controller
             $this->load->view( 'user/user_header' );
             $this->load->view( 'user/user_nav', $data );
 
+            $data = NULL;
             $data['index_active'] = (bool) false;
             $data['node_active'] = (bool) false;
             $data['info_active'] = (bool) TRUE;
@@ -537,6 +538,7 @@ class User extends CI_Controller
             $trade = $this->user_model->t_select($trade_no);
             if ($trade)
             {
+                $data = NULL;
                 if ($trade->user_name != $this->session->userdata('s_username'))
                 {
                     $data['error'] = TRUE;
