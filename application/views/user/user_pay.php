@@ -69,6 +69,96 @@ $this->load->helper('form');
     <script src="<?php echo base_url("static/js/bootstrap.min.js"); ?>" type="text/javascript"></script>
     <script src="<?php echo base_url("static/js/md5.js"); ?>" type="text/javascript"></script>
     <script src="<?php echo base_url("static/bootstrap-dialog/js/bootstrap-dialog.min.js"); ?>"></script>
+
+    <script language="javascript">
+        $(document).ready(function() {
+            var options = {
+                success:       showResponse,  // post-submit callback
+                dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
+            };
+
+            $('#payForm').submit(function() {
+                if ($(this).valid()) {
+                    $(this).ajaxSubmit(options);
+                    var dialog = new BootstrapDialog({
+                        size: BootstrapDialog.SIZE_LARGE,
+                        title: '账户充值',
+                        message: '正在提交，请稍候。。。',
+                        closable: false,
+                        buttons: [{
+                            label: '关闭',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        }]
+                    });
+                    dialog.realize();
+                    dialog.getModalBody().css('color', '#000');
+                    dialog.open();
+                    return false;
+                }
+            });
+
+            jQuery.validator.addMethod("onlyAlphaNumber", function(value, element) {
+                return /^[a-zA-Z0-9]+$/.test(value);
+            }, "Alpha and Number Only!");
+
+            $('#payForm').validate( {
+                    rules:{
+                        username: {
+                            required: true,
+                            minlength: 6,
+                            onlyAlphaNumber: true
+                        },
+                        fee: {
+                            required: true,
+                            digits: true
+                        }
+                    }
+                }
+            )
+        });
+
+        // post-submit callback
+        function showResponse(data) {
+            if (data.result == "success") {
+                var dialog = new BootstrapDialog({
+                    size: BootstrapDialog.SIZE_LARGE,
+                    type: BootstrapDialog.TYPE_SUCCESS,
+                    title: '注册成功',
+                    message: data.result,
+                    closable: false,
+                    buttons: [{
+                        label: '关闭',
+                        action: function (dialogRef) {
+                            dialogRef.close();
+                            window.location.href = data.pay_url;
+                        }
+                    }]
+                });
+                dialog.realize();
+                dialog.getModalBody().css('color', '#000');
+                dialog.open();
+            } else {
+                var dialog = new BootstrapDialog({
+                    size: BootstrapDialog.SIZE_LARGE,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    title: '错误',
+                    message: data.result,
+                    closable: false,
+                    buttons: [{
+                        label: '关闭',
+                        action: function (dialogRef) {
+                            dialogRef.close();
+                        }
+                    }]
+                });
+                dialog.realize();
+                dialog.getModalBody().css('color', '#000');
+                dialog.open();
+            }
+        }
+    </script>
 </head>
 <body class="bg-black">
 <div class="form-box" id="login-box">
@@ -90,8 +180,8 @@ $this->load->helper('form');
         </div>
         <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-money fa-fw"></i></span>
-                <input type="number"  id="fee" name="fee" class="form-control" tabindex=2 placeholder="Password" required>
+                <span class="input-group-addon"><i class="fa fa-cny"></i></span>
+                <input type="number"  id="amount" name="amount" class="form-control" tabindex=2 placeholder="Amount" required>
             </div>
         </div>
     </div>

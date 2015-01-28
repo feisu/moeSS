@@ -434,6 +434,22 @@ class User extends CI_Controller
         return;
     }
 
+    function do_pay()
+    {
+        if ($this->is_login())
+        {
+            $user_name = $this->input->post('username');
+            $amount = $this->input->post('amount');
+            echo '{"result" : "邮件地址已存在！", "pay_url" : "maoxian.de" }';
+            return;
+        }
+        else
+        {
+            redirect(site_url('user/login'));
+        }
+        return;
+    }
+
     function do_profile_update()
     {
         if ($this->is_login())
