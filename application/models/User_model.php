@@ -643,7 +643,7 @@ class User_model extends CI_Model
             'amount' => $amount,
             'ip' => $ip,
             'result' => FALSE,
-            'ctime' => now(),
+            'ctime' => time(),
             'ftime' => 0
         );
 

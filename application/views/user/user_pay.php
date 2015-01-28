@@ -126,14 +126,12 @@ $this->load->helper('form');
                     size: BootstrapDialog.SIZE_LARGE,
                     type: BootstrapDialog.TYPE_SUCCESS,
                     title: '订单生成成功',
-                    message: data.result,
+                    message: data.body,
                     closable: false,
                     buttons: [{
-                        label: '支付',
-                        cssClass: 'btn-primary',
+                        label: '关闭',
                         action: function (dialogRef) {
                             dialogRef.close();
-                            window.location.href = data.pay_url;
                         }
                     }]
                 });
@@ -176,7 +174,7 @@ $this->load->helper('form');
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                <input type="text"  id="username" name="username" class="form-control" tabindex=1 placeholder="Username" value="<?php echo $user_name; ?>" required disabled>
+                <input type="text"  id="username" name="username" class="form-control" tabindex=1 placeholder="Username" value="<?php echo $user_name; ?>" required readonly>
             </div>
         </div>
         <div class="form-group">

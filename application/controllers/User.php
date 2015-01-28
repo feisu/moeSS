@@ -453,12 +453,35 @@ class User extends CI_Controller
             }
             $trade_no = date("YmdHis").$user->uid;
             $ip = $this->input->ip_address();
-
             if ($this->user_model->create_transaction($trade_no, $user_name, $amount, $ip))
             {
+                // 加载支付宝配置
+                $this->config->load('alipay', TRUE);
+                // 加载支付宝支付请求类库
+                require_once(APPPATH."third_party/alipay/alipay_submit.class.php");
 
+                $submit = new AlipaySubmit($this->config->item('alipay'));
+
+                $paras = array(
+                    'service'           => 'create_direct_pay_by_user',
+                    'partner'           => $this->config->item('partner', 'alipay'),
+                    'payment_type'      => $this->config->item('payment_type', 'alipay'),
+                    'notify_url'        => $this->config->item('notify_url', 'alipay'),
+                    'return_url'        => $this->config->item('return_url', 'alipay'),
+                    'seller_email'      => $this->config->item('seller_email', 'alipay'),
+                    'out_trade_no'      => $trade_no,
+                    'subject'	        => SITE_NAME.' 账户充值 '.$amount.' 元',
+                    'total_fee'         => $amount,
+                    'body'              => SITE_NAME.' 账户充值 '.$amount.' 元',
+                    'show_url'          => base_url('user'),
+                    'anti_phishing_key' => '',
+                    'exter_invoke_ip'   => '',
+                    '_input_charset'    => $this->config->item('input_charset', 'alipay')
+                );
+                $body = $submit->buildRequestForm($paras, "post", "确认支付");
+                echo "{\"result\" : \"success\", \"body\" : \"$body\" }";
             }
-            echo '{"result" : "success", "pay_url" : "https://maoxian.de" }';
+            echo '{"result" : "订单创建失败！" }';
             return;
         }
         else
