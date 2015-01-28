@@ -543,6 +543,7 @@ class User extends CI_Controller
                 }
                 else
                 {
+                    $data['error'] = FALSE;
                     $form = $this->user_model->t_f_select($trade_no)->body;
                     $data['form'] = str_replace("<script>document.forms['alipaysubmit'].submit();</script>", "", $form);
                     $data['trade_no'] = $trade_no;
