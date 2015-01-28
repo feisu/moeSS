@@ -83,4 +83,61 @@ class Order extends CI_Controller
         }
         return;
     }
+
+    function callback ($method)
+    {
+        // 加载支付宝配置
+        $this->config->load('alipay', TRUE);
+        // 加载支付宝返回通知类库
+        require_once(APPPATH."third_party/alipay/alipay_notify.class.php");
+        // 初始化支付宝返回通知类
+        $alipayNotify = new AlipayNotify($this->config->item('alipay'));
+
+        $input = array();
+        $is_ajax = FALSE;
+        $notify_status = 'success';
+
+        // 这里做同步还是异步的判断并获取返回数据验证请求
+        switch ($method) {
+            case 'notify':
+                $result = $alipayNotify->verifyNotify();
+                $input = $this->input->post();
+                $is_ajax = TRUE;
+                break;
+
+            case 'return':
+                $result = $alipayNotify->verifyReturn();
+                $input = $this->input->get();
+                break;
+
+            default:
+                return $this->out_not_found();
+                break;
+        }
+
+        // 支付宝返回支付成功和交易结束标志
+        if ($result && ($input['trade_status'] == 'TRADE_FINISHED' || $input['trade_status'] == 'TRADE_SUCCESS'))
+        {
+            $trade_no = $input['out_trade_no'];
+
+            // 验证成功则更新订单信息（略）
+            // ...
+        }
+        else
+        {
+            // 否则置状态为失败
+            $notify_status = 'fail';
+        }
+
+        if ($is_ajax)
+        {
+            // 异步方式调用模板输出状态
+            $this->view->load('alipay', array('status' => $notify_status));
+        }
+        else
+        {
+            // 同步方式跳转到订单详情控制器，redirect方法要你自己写
+            return $this->redirect("order/view/$id#status:$notify_status");
+        }
+    }
 }

@@ -533,7 +533,7 @@ class User extends CI_Controller
             echo "充值金额： ".$trade->amount."<br>";
             echo "创建时间： ".date('Y-m-d H:i:s', $trade->ctime)."<br>";
             echo "是否完成： ".$trade->result."<br>";
-            echo $form;
+            echo str_replace("<script>document.forms['alipaysubmit'].submit();</script>", "",$form);
             return;
         }
         else
