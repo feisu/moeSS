@@ -100,7 +100,8 @@ class Order_model extends CI_Model
         $data = array(
             'nofity_id' => $notify_id,
             'buyer_email' => $buyer_email,
-            'ftime' => $ftime
+            'ftime' => $ftime,
+            'result' => TRUE
         );
         $this->db->where('trade_no', $trade_no);
         return $this->db->update('transactions',$data);

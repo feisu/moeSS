@@ -128,6 +128,11 @@ class Order extends CI_Controller
             {
                 if ($trade->amount == $amount)
                 {
+                    if ($trade->result)
+                    {
+                        echo '<script>alert("充值成功！");</script>';
+                        return;
+                    }
                     if ($this->order_model->add_money($trade->user_name, $trade->amount))
                     {
                         if ($this->order_model->finish_trade($trade_no, $notify_id, $buyer_email, strtotime($pay_time)))
