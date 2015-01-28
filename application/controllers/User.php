@@ -554,12 +554,12 @@ class User extends CI_Controller
                     $data['time'] = date('Y-m-d H:i:s', $trade->ctime);
                     if ($trade->result)
                     {
-                        $date['order_result'] = "成功";
+                        $data['order_result'] = "成功";
                         $data['form'] = "<div></div>";
                     }
                     else
                     {
-                        $date['order_result'] = "进行中";
+                        $data['order_result'] = "进行中";
                     }
                 }
             }
