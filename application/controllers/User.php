@@ -521,19 +521,43 @@ class User extends CI_Controller
     {
         if ($this->is_login())
         {
+            $this->load->helper('comm');
+            $data['user_name'] = $this->session->userdata('s_username');
+            $data['gravatar'] = get_gravatar($this->session->userdata('s_email'));
+            $this->load->view( 'user/user_header' );
+            $this->load->view( 'user/user_nav', $data );
+
+            $data['index_active'] = (bool) false;
+            $data['node_active'] = (bool) false;
+            $data['info_active'] = (bool) TRUE;
+            $data['update_active'] = (bool) false;
+            $data['code_active'] = (bool) false;
+            $this->load->view( 'user/user_sidebar', $data );
+
             $trade = $this->user_model->t_select($trade_no);
-            if ($trade->user_name != $this->session->userdata('s_username'))
+            if ($trade)
             {
-                echo "非法访问！";
-                return;
+                if ($trade->user_name != $this->session->userdata('s_username'))
+                {
+                    $data['error'] = TRUE;
+                }
+                else
+                {
+                    $form = $this->user_model->t_f_select($trade_no)->body;
+                    $data['form'] = str_replace("<script>document.forms['alipaysubmit'].submit();</script>", "", $form);
+                    $data['trade_no'] = $trade_no;
+                    $data['user_name'] = $trade->user_name;
+                    $data['amount'] = $trade->amount;
+                    $data['time'] = date('Y-m-d H:i:s', $trade->ctime);
+                    $date['result'] = $trade->result;
+                }
             }
-            $form = $this->user_model->t_f_select($trade_no)->body;
-            echo "交易编号： ".$trade_no."<br>";
-            echo "充值账户： ".$trade->user_name."<br>";
-            echo "充值金额： ".$trade->amount."<br>";
-            echo "创建时间： ".date('Y-m-d H:i:s', $trade->ctime)."<br>";
-            echo "是否完成： ".$trade->result."<br>";
-            echo str_replace("<script>document.forms['alipaysubmit'].submit();</script>", "",$form);
+            else
+            {
+                $data['error'] = TRUE;
+            }
+            $this->load->view( 'user/user_order', $data );
+            $this->load->view( 'user/user_footer' );
             return;
         }
         else
