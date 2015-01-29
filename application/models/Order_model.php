@@ -94,6 +94,7 @@ class Order_model extends CI_Model
                 );
                 $this->db->where('trade_no', $trade_no);
                 $this->db->update('transactions', $data);
+                log_message('debug', "$trade_no complete!");
             }
         }
         else
@@ -103,6 +104,7 @@ class Order_model extends CI_Model
         $this->db->select('money');
         $this->db->where('user_name', $query->user_name);
         $query = $this->db->get('user');
+        log_message('debug', "Add money $query->amount to $query->user_name!");
         if ($query->num_rows() > 0)
         {
             $money = $query->result()[0]->money;

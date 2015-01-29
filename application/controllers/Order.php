@@ -131,6 +131,7 @@ class Order extends CI_Controller
                     if ( $trade->result || !$is_ajax )  //只接收 Notify
                     {
                         echo '<script>alert("充值成功！");</script>';
+                        log_message('debug', "This is alipay return!");
                         return;
                     }
                     if ($this->order_model->add_money($trade_no))
@@ -138,6 +139,7 @@ class Order extends CI_Controller
                         if ($this->order_model->finish_trade($trade_no, $notify_id, $buyer_email, strtotime($pay_time)))
                         {
                             echo '<script>alert("充值成功！");</script>';
+                            log_message('debug', "This is alipay notify!");
                         }
                     }
                     else
