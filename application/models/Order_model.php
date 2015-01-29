@@ -75,18 +75,41 @@ class Order_model extends CI_Model
         }
     }
 
-    function add_money($user_name, $amount)
+    function add_money($trade_no)
     {
+        $this->db->where('trade_no', $trade_no);
+        $query = $this->db->get('transactions');
+        if ($query->num_rows() > 0)
+        {
+            $query = $query->result()[0];
+            if ($query->result)
+            {
+                return TRUE;
+            }
+            else
+            {
+                $data = array(
+                    'result' => TRUE,
+                    'ftime' => time()
+                );
+                $this->db->where('trade_no', $trade_no);
+                $this->db->update('transactions', $data);
+            }
+        }
+        else
+        {
+            return FALSE;
+        }
         $this->db->select('money');
-        $this->db->where('user_name', $user_name);
+        $this->db->where('user_name', $query->user_name);
         $query = $this->db->get('user');
         if ($query->num_rows() > 0)
         {
             $money = $query->result()[0]->money;
-            $money = $money + $amount;
+            $money = $money + $query->amount;
             $data = array( 'money' => $money );
             $this->db->limit(1);
-            $this->db->where('user_name', $user_name);
+            $this->db->where('user_name', $query->user_name);
             return $this->db->update('user',$data);
         }
         else
