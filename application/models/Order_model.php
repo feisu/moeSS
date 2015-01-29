@@ -81,8 +81,8 @@ class Order_model extends CI_Model
         $query = $this->db->get('transactions');
         if ($query->num_rows() > 0)
         {
-            $query = $query->result()[0];
-            if ($query->result)
+            $trade = $query->result()[0];
+            if ($trade->result)
             {
                 return TRUE;
             }
@@ -102,16 +102,16 @@ class Order_model extends CI_Model
             return FALSE;
         }
         $this->db->select('money');
-        $this->db->where('user_name', $query->user_name);
+        $this->db->where('user_name', $trade->user_name);
         $query = $this->db->get('user');
-        log_message('debug', "Add money $query->amount to $query->user_name!");
+        log_message('debug', "Add money $trade->amount to $trade->user_name!");
         if ($query->num_rows() > 0)
         {
             $money = $query->result()[0]->money;
-            $money = $money + $query->amount;
+            $money = $money + $trade->amount;
             $data = array( 'money' => $money );
             $this->db->limit(1);
-            $this->db->where('user_name', $query->user_name);
+            $this->db->where('user_name', $trade->user_name);
             return $this->db->update('user',$data);
         }
         else
