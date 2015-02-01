@@ -45,6 +45,15 @@ CREATE TABLE IF NOT EXISTS `mail_log` (
   `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `moess_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
+  `data` blob DEFAULT '' NOT NULL,
+  PRIMARY KEY (id),
+  KEY `ci_sessions_timestamp` (`timestamp`)
+);
+
 CREATE TABLE IF NOT EXISTS `options` (
   `option_id` int(20) unsigned NOT NULL,
   `option_name` varchar(64) NOT NULL,
@@ -57,7 +66,7 @@ INSERT INTO `options` VALUES(2, 'default_transfer', '5368709120', '默认流量(
 INSERT INTO `options` VALUES(3, 'default_invite_number', '1', '默认邀请数量');
 INSERT INTO `options` VALUES(4, 'check_min', '50', '签到下限(MB)');
 INSERT INTO `options` VALUES(5, 'check_max', '100', '签到上限(MB)');
-INSERT INTO `options` VALUES(6, 'version', '1.0', '程序版本');
+INSERT INTO `options` VALUES(6, 'version', '1.1', '程序版本');
 INSERT INTO `options` VALUES(7, 'default_method', 'rc4-md5', '默认加密方式');
 INSERT INTO `options` VALUES(8, 'mail_protocol', 'sendgrid', '邮件引擎');
 INSERT INTO `options` VALUES(9, 'mail_mailpath', '/usr/sbin/sendmail', 'Sendmail路径');

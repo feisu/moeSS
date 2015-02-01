@@ -395,7 +395,7 @@ $config['encryption_key'] = 'somethingRandomHere';
 |
 */
 
-$config['sess_driver']			= 'files';
+$config['sess_driver']			= 'database';
 $config['sess_cookie_name']		= 'asiass_session';
 $config['sess_expiration']		= 7200;
 $config['sess_encrypt_cookie']	= TRUE;
